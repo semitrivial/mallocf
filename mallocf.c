@@ -5,6 +5,19 @@
 #include <stdio.h>
 #include "mallocf.h"
 
+#ifdef __va_copy
+  #define mallocf_va_copy(dest,src) __va_copy((dest),(src))
+  #define mallocf_va_end_copy(cpy) va_end(cpy)
+#else
+  #ifdef va_copy
+    #define mallocf_va_copy(dest,src) va_copy((dest),(src))
+    #define mallocf_va_end_copy(cpy) va_end(cpy)
+  #else
+    #define mallocf_va_copy(dest,src) (dest)=(src)
+    #define mallocf_va_end_copy(cpy) do {} while(0)
+  #endif
+#endif
+
 char *strdupf( const char *fmt, ... )
 {
   char *result;
@@ -20,8 +33,13 @@ char *strdupf( const char *fmt, ... )
 char *vstrdupf( const char *fmt, va_list args )
 {
   char *buf;
+  va_list copy;
+
+  mallocf_va_copy( copy, args );
 
   buf = malloc( sizeof(char) * (1 + vstrlenf( fmt, args )) );
+
+  mallocf_va_end_copy( copy );
 
   if ( !buf )
     return NULL;
