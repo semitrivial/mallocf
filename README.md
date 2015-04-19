@@ -2,18 +2,21 @@
 
 ## License: MIT.
 
-## Features: Reentrant, does not depend on static buffers etc.
+## Features
 
-Functions:
-*`strdupf`
-*`strlenf`
-*`vstrdupf`
-*`vstrlenf`
+* Reentrant
+* Does not depend on static buffers
+* Provides the following functions (see documentation below):
+  * `strdupf`
+  * `strlenf`
+  * `vstrdupf`
+  * `vstrlenf`
 
 ## Installation
 
-Simply add `mallocf.c` and `mallocf.h` to your project as if you wrote them
-yourself.  `#include "mallocf.h"` in any file where you want to use mallocf
+1. Add `mallocf.c` and `mallocf.h` to your project as if you wrote them
+yourself.
+2. `#include "mallocf.h"` in any file where you want to use mallocf
 functions.
 
 ## Documentation
@@ -40,7 +43,7 @@ a variadic list of parameters (`...`).
 
 #### Example
 
-> `size_t len = strlenf( "%d+%f", id_number, pi );`
+> `size_t len = strlenf( "The value of pi is %f", pi );`
 
 ### `vstrdupf`
 
