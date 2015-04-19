@@ -1,6 +1,10 @@
 #include <stdio.h>//vsprintf and vsnprintf
 #include "mallocf.h"
 
+/*
+ * The following macros make the library usable in certain pre-C99
+ * environments where va_copy is not defined.
+ */
 #ifdef __va_copy
   #define mallocf_va_copy(dest,src) __va_copy((dest),(src))
   #define mallocf_va_end_copy(cpy) va_end(cpy)
@@ -33,7 +37,7 @@ char *vstrdupf( const char *fmt, va_list args )
 
   mallocf_va_copy( copy, args );
 
-  buf = malloc( sizeof(char) * (1 + vstrlenf( fmt, copy )) );
+  buf = malloc( 1 + vstrlenf( fmt, copy ) );
 
   mallocf_va_end_copy( copy );
 
