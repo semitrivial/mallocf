@@ -1,8 +1,4 @@
-#include <stdarg.h>
-#include <string.h>
-#include <ctype.h>
-#include <stdlib.h>
-#include <stdio.h>
+#include <stdio.h>//vsprintf and vsnprintf
 #include "mallocf.h"
 
 #ifdef __va_copy
