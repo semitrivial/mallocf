@@ -6,7 +6,7 @@
 
 char *strdupf( const char *fmt, ... );
 char *vstrdupf( const char *fmt, va_list args );
-size_t strlenf( const char *fmt, ... );
-size_t vstrlenf( const char *fmt, va_list args );
+int strlenf( const char *fmt, ... );
+int vstrlenf( const char *fmt, va_list args );
 
 #endif // MALLOCF_INCLUDE_GUARD

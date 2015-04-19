@@ -29,7 +29,7 @@ Returns a `C` string obtained by applying a format (`fmt`) to a variadic list
 of parameters (`...`).  Like `printf`, but printing to memory instead of screen.
 The string is `malloc`'d, and should be `free`'d when no longer needed.
 Returns `NULL` if the necessary memory couldn't be allocated (or if the format
-is prevented by an encoding error caused by mixing wide chars and non-wide chars).
+is prevented by an encoding error caused by invalid wide-chars).
 
 #### Example
 
@@ -37,15 +37,16 @@ is prevented by an encoding error caused by mixing wide chars and non-wide chars
 
 ### `strlenf`
 
-> `size_t strlenf( const char *fmt, ... );`
+> `int strlenf( const char *fmt, ... );`
 
 Returns the length of a `C` string obtained by applying a format (`fmt`) to
-a variadic list of parameters (`...`).  Returns 0 if there is
-an encoding error caused by mixing wide chars and non-wide chars.
+a variadic list of parameters (`...`).
+
+* Returns a negative number if there is an encoding error involving wide-chars.
 
 #### Example
 
-> `size_t len = strlenf( "The value of pi is %f", pi );`
+> `int len = strlenf( "The value of pi is %f", pi );`
 
 ### `vstrdupf`
 
@@ -55,13 +56,12 @@ Returns a `C` string obtained by applying a format (`fmt`) to a `va_list`
 of arguments.  Like `vprintf`, but prints to memory instead of screen.
 Returns a `malloc`'d string, which should be `free`'d when no longer needed.
 Returns `NULL` if the necessary memory could not be allocated (or if the
-format is prevented by an encoding error caused by mixing wide and non-wide
-chars).
+format is prevented by an encoding error involving wide-chars).
 
 ### `vstrlenf`
 
-> `size_t vstrlenf( const char *fmt, va_list args );`
+> `int vstrlenf( const char *fmt, va_list args );`
 
 Returns the length of a `C` string obtained by applying a format (`fmt`) to
-a `va_list` of arguments.  Returns 0 if there is an encoding error caused by
-mixing wide and non-wide chars.
+a `va_list` of arguments.  Returns a negative number if there is an encoding
+error caused by invalid wide-chars.

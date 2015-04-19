@@ -1,11 +1,6 @@
 #include <stdio.h>//vsprintf and vsnprintf
 #include "mallocf.h"
 
-/*
- * Utility function needed to avoid encoding errors
- */
-size_t vstrlenf_verbose( const char *fmt, va_list args, int *err );
-
 char *strdupf( const char *fmt, ... )
 {
   char *result;
@@ -22,36 +17,20 @@ char *vstrdupf( const char *fmt, va_list args )
 {
   char *buf;
   va_list copy;
-  size_t size;
-  int encoding_err = 0;
+  int size;
 
   va_copy( copy, args );
 
-  size = vstrlenf_verbose( fmt, copy, &encoding_err );
+  size = vstrlenf( fmt, copy );
 
   va_end( copy );
 
-  if ( !size )
-  {
-    /*
-     * If vstrlenf_verbose returns 0, either the string really is
-     * zero-length, or there was an encoding error.  In the latter
-     * case, vstrlenf_verbose sets encoding_err to 1.
-     */
-    if ( encoding_err )
-      return NULL;
-    else
-    {
-      /*
-       * We could return strdup("") here, but we'd have to #include <string.h>
-       */
-      if ( !(buf = malloc(1)) )
-        return NULL;
-
-      buf[0] = '\0';
-      return buf;
-    }
-  }
+  /*
+   * If vstrlenf returns a negative number, that indicates a wide-char
+   * encoding error.  Return NULL in that case.
+   */
+  if ( size < 0 )
+    return NULL;
 
   buf = malloc( size + 1 );
 
@@ -63,7 +42,7 @@ char *vstrdupf( const char *fmt, va_list args )
   return buf;
 }
 
-size_t strlenf( const char *fmt, ... )
+int strlenf( const char *fmt, ... )
 {
   va_list args;
   int result;
@@ -83,57 +62,20 @@ size_t strlenf( const char *fmt, ... )
   va_end( args );
 
   /*
-   * In case of encoding error, vsnprintf returns a negative
-   * number.  In that event, return 0.
+   * Note: In case of an encoding error involving wide-chars,
+   * vsnprintf returns a negative number, which is then returned
+   * by strlenf.
    */
-  if ( result < 0 )
-    return 0;
-  else
-    return result;
+  return result;
 }
 
-size_t vstrlenf( const char *fmt, va_list args )
+int vstrlenf( const char *fmt, va_list args )
 {
   char buf;
-  int result;
 
   /*
-   * For explanation of the following line, see the comment
+   * For explanation of the following line, see the comments
    * in "strlenf" above.
    */
-  result = vsnprintf( &buf, 0, fmt, args );
-
-  /*
-   * In case of encoding error, return 0.
-   */
-  if ( result < 0 )
-    return 0;
-  else
-    return result;
-}
-
-size_t vstrlenf_verbose( const char *fmt, va_list args, int *err )
-{
-  char buf;
-  int result;
-
-  /*
-   * For explanation of the following line, see the comment
-   * in "strlenf" above.
-   */
-  result = vsnprintf( &buf, 0, fmt, args );
-
-  /*
-   * In case of encoding error, return 0 and indicate the
-   * encoding error using a supplied int (if any).
-   */
-  if ( result < 0 )
-  {
-    if ( err )
-      *err = 1;
-
-    return 0;
-  }
-  else
-    return result;
+  return vsnprintf( &buf, 0, fmt, args );
 }
