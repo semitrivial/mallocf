@@ -71,11 +71,13 @@ size_t strlenf( const char *fmt, ... )
 
   va_start( args, fmt );
   /*
-   * vsnprintf returns the number of chars that could
-   * not be printed due to size limit.  So we call it
-   * with size limit 0 to get the desired length.
-   * (vsnprintf returns a negative number in case of encoding
-   * error).
+   * In case the size limit is too small,
+   * vsnprintf returns the number of chars that would
+   * have been printed, had the size limit been large enough.
+   * (Unless there is an encoding error, see below.)
+   * So, by specifying a size limit of 0, we provoke
+   * vsnprintf to return the total length of the formatted
+   * string.
    */
   result = vsnprintf( &buf, 0, fmt, args );
   va_end( args );
@@ -96,11 +98,8 @@ size_t vstrlenf( const char *fmt, va_list args )
   int result;
 
   /*
-   * vsnprintf returns the number of chars that could
-   * not be printed due to size limit.  So we call it
-   * with size limit 0 to get the desired length.
-   * (vsnprintf returns a negative number in case of encoding
-   * error).
+   * For explanation of the following line, see the comment
+   * in "strlenf" above.
    */
   result = vsnprintf( &buf, 0, fmt, args );
 
@@ -119,11 +118,8 @@ size_t vstrlenf_verbose( const char *fmt, va_list args, int *err )
   int result;
 
   /*
-   * vsnprintf returns the number of chars that could
-   * not be printed due to size limit.  So we call it
-   * with size limit 0 to get the desired length.
-   * (vsnprintf returns a negative number in case of encoding
-   * error).
+   * For explanation of the following line, see the comment
+   * in "strlenf" above.
    */
   result = vsnprintf( &buf, 0, fmt, args );
 
