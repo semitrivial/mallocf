@@ -56,6 +56,11 @@ size_t strlenf( const char *fmt, ... )
   char buf;
 
   va_start( args, fmt );
+  /*
+   * vsnprintf returns the number of chars that could
+   * not be printed due to size limit.  So we call it
+   * with size limit 0 to get the desired length.
+   */
   result = vsnprintf( &buf, 0, fmt, args );
   va_end( args );
 
