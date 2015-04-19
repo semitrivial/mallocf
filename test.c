@@ -5,7 +5,7 @@ int main( int argc, const char* argv[] )
 {
   char *world = "World";
   char *buf;
-  size_t len;
+  int len;
 
   buf = strdupf( "Hello, %s!\n", world );
 
@@ -13,7 +13,7 @@ int main( int argc, const char* argv[] )
 
   len = strlenf( "%d+%f", 5, 3.14 );
 
-  printf( "The length of the string \"%d+%f\" is %zd.\n", 5, 3.14, len );
+  printf( "The length of the string \"%d+%f\" is %d.\n", 5, 3.14, len );
 
   printf( "The result of "
           "strlenf(\"%%lc\", (wchar_t)-1)"
