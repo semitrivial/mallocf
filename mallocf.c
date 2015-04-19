@@ -33,7 +33,7 @@ char *vstrdupf( const char *fmt, va_list args )
 
   mallocf_va_copy( copy, args );
 
-  buf = malloc( sizeof(char) * (1 + vstrlenf( fmt, args )) );
+  buf = malloc( sizeof(char) * (1 + vstrlenf( fmt, copy )) );
 
   mallocf_va_end_copy( copy );
 
