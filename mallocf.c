@@ -1,6 +1,5 @@
 #include <stdio.h>//vsprintf and vsnprintf
 #include <stdlib.h>//size_t, malloc
-#include <stdarg.h>//va_start, va_end, va_list
 #include "mallocf.h"
 
 char *strdupf( const char *fmt, ... )
