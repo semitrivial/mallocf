@@ -3,7 +3,7 @@
 
 int main( )
 {
-  char *world = "World";
+  const char *world = "World";
   char *buf;
   int len;
 
