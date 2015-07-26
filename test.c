@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include "mallocf.h"
 
-int main( int argc, const char* argv[] )
+int main( )
 {
   char *world = "World";
   char *buf;
