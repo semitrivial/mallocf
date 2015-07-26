@@ -1,3 +1,3 @@
 all:
-	gcc -Wall test.c mallocf.c -o test
+	gcc -Wall -Wextra -pedantic test.c mallocf.c -o test
 
